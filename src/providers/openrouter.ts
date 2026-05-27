@@ -103,7 +103,7 @@ export class OpenRouterProvider implements AIProvider {
 
   async validateCredentials(): Promise<boolean> {
     try {
-      const response = await fetch('https://openrouter.ai/api/v1/models', {
+      const response = await fetch('https://openrouter.ai/api/v1/auth/key', {
         headers: {
           Authorization: `Bearer ${this.apiKey}`,
         },
