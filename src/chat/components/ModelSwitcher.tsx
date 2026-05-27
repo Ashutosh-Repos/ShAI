@@ -7,6 +7,7 @@ import {
   CLAUDE_MODELS,
   CLAUDE_SUBSCRIPTION_MODELS,
   COPILOT_MODELS,
+  GEMINI_MODELS,
   OLLAMA_RECOMMENDED_MODELS,
   OPENAI_MODELS,
   OPENROUTER_MODELS,
@@ -42,6 +43,7 @@ const PROVIDER_LABELS: Record<ProviderName, string> = {
   copilot: 'GitHub Copilot',
   claude: 'Claude API',
   openai: 'OpenAI API',
+  gemini: 'Google Gemini',
   ollama: 'Ollama',
   openrouter: 'OpenRouter',
 };
@@ -91,6 +93,8 @@ function getModelsForProvider(
       return CHATGPT_SUBSCRIPTION_MODELS;
     case 'copilot':
       return COPILOT_MODELS;
+    case 'gemini':
+      return GEMINI_MODELS;
     case 'ollama':
       return OLLAMA_RECOMMENDED_MODELS.map((m) => ({ value: m, label: m }));
     case 'openrouter':

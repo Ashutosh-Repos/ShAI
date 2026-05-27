@@ -10,6 +10,7 @@ import {
   CLAUDE_MODELS,
   CLAUDE_SUBSCRIPTION_MODELS,
   COPILOT_MODELS,
+  GEMINI_MODELS,
   OllamaProvider,
   OPENAI_MODELS,
   OPENROUTER_MODELS,
@@ -90,6 +91,8 @@ function getModelsForProvider(
       return CHATGPT_SUBSCRIPTION_MODELS;
     case 'copilot':
       return COPILOT_MODELS;
+    case 'gemini':
+      return GEMINI_MODELS;
     case 'openrouter':
       return OPENROUTER_MODELS;
     case 'ollama':

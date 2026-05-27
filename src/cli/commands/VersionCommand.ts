@@ -64,7 +64,7 @@ function renderUpdateBanner(current: string, latest: string): void {
   console.log(line(''));
   console.log(line(`   ${pc.dim(current)} → ${accent(pc.bold(latest))}`));
   console.log(line(''));
-  console.log(line(`   Run: ${accent('npm i -g shai@latest')}`));
+  console.log(line(`   Run: ${accent(`npm i -g ${PACKAGE_NAME}@latest`)}`));
   console.log(line(''));
   console.log(accent(`  └${'─'.repeat(width)}┘`));
   console.log();

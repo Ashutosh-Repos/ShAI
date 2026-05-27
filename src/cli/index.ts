@@ -44,7 +44,9 @@ if (notifier.update) {
   console.log(line(''));
   console.log(line(`   ${pc.dim(current)} → ${accentColor(pc.bold(latest))}`));
   console.log(line(''));
-  console.log(line(`   Run: ${accentColor('npm i -g shai@latest')}`));
+  console.log(
+    line(`   Run: ${accentColor(`npm i -g ${PACKAGE_NAME}@latest`)}`),
+  );
   console.log(line(''));
   console.log(accentColor(`  └${'─'.repeat(width)}┘`));
   console.log();

@@ -106,6 +106,7 @@ Configure with `shai --auth`:
 | ---------------------- | -------------------------------- |
 | **Claude** (Anthropic) | API Key or Pro/Max subscription  |
 | **OpenAI** (ChatGPT)   | API Key or Plus/Pro subscription |
+| **Google Gemini**      | API Key (Free & Paid tiers)      |
 | **GitHub Copilot**     | Free with Copilot subscription   |
 | **Ollama**             | Free, runs locally               |
 | **OpenRouter**         | Pay-per-use, multiple models     |

@@ -6,6 +6,7 @@ export const ProviderName = z.enum([
   'openai',
   'chatgpt-subscription',
   'copilot',
+  'gemini',
   'ollama',
   'openrouter',
 ]);

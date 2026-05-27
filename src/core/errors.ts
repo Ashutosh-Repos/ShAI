@@ -33,6 +33,7 @@ export const API_KEY_PATTERNS: Record<
   openai: { prefix: 'sk-', name: 'OpenAI' },
   claude: { prefix: 'sk-ant-', name: 'Claude/Anthropic' },
   openrouter: { prefix: 'sk-or-', name: 'OpenRouter' },
+  gemini: { prefix: 'AIzaSy', name: 'Google Gemini' },
 };
 
 /**
@@ -41,7 +42,7 @@ export const API_KEY_PATTERNS: Record<
  */
 export function validateApiKeyFormat(
   key: string,
-  provider: 'openai' | 'claude' | 'openrouter',
+  provider: 'openai' | 'claude' | 'openrouter' | 'gemini',
 ): string | null {
   const pattern = API_KEY_PATTERNS[provider];
   if (!pattern) return null;
@@ -50,6 +51,26 @@ export function validateApiKeyFormat(
     return `Warning: ${pattern.name} API keys typically start with "${pattern.prefix}". Your key may be invalid.`;
   }
 
+  return null;
+}
+
+function getApiErrorMessage(errorText: string | undefined): string | null {
+  if (!errorText) return null;
+  try {
+    const parsed = JSON.parse(errorText) as unknown;
+    if (parsed && typeof parsed === 'object') {
+      const obj = parsed as Record<string, unknown>;
+      if (obj.error && typeof obj.error === 'object') {
+        const nestedError = obj.error as Record<string, unknown>;
+        if (nestedError.message && typeof nestedError.message === 'string') {
+          return nestedError.message;
+        }
+      }
+      if (obj.message && typeof obj.message === 'string') {
+        return obj.message;
+      }
+    }
+  } catch {}
   return null;
 }
 
@@ -78,34 +99,49 @@ export function createHttpError(ctx: ApiErrorContext): Error {
       }
       return new Error(`Resource not found on ${provider}. ${errorText || ''}`);
 
-    case HTTP_STATUS.RATE_LIMITED:
+    case HTTP_STATUS.RATE_LIMITED: {
+      const apiMsg = getApiErrorMessage(errorText);
+      if (apiMsg) {
+        return new Error(`Rate limit or quota error: ${apiMsg}`);
+      }
       return new Error(
         `Rate limited by ${provider}. Please wait a moment and try again.`,
       );
+    }
 
     case HTTP_STATUS.OVERLOADED:
       return new Error(
         `${provider} is currently overloaded. Please try again in a few moments.`,
       );
 
-    case HTTP_STATUS.BAD_REQUEST:
+    case HTTP_STATUS.BAD_REQUEST: {
       // Check for specific error patterns
       if (errorText?.includes('model_not_supported')) {
         return new Error(
           `Model not supported by your ${provider} subscription. Check your plan or try a different model.`,
         );
       }
+      const apiMsg = getApiErrorMessage(errorText);
+      if (apiMsg) {
+        return new Error(`${provider} API error: ${apiMsg}`);
+      }
       return new Error(`${provider} API error: Bad request - ${errorText}`);
+    }
 
-    default:
+    default: {
       if (status && status >= 500) {
         return new Error(
           `${provider} server error (${status}). Please try again later.`,
         );
       }
+      const apiMsg = getApiErrorMessage(errorText);
+      if (apiMsg) {
+        return new Error(`${provider} API error: ${apiMsg}`);
+      }
       return new Error(
         `${provider} API error: ${status || 'Unknown'} - ${errorText || 'Unknown error'}`,
       );
+    }
   }
 }
 

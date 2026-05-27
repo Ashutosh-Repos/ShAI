@@ -6,6 +6,7 @@ import {
   CLAUDE_SUBSCRIPTION_MODELS,
   COPILOT_MODELS,
   createProvider,
+  GEMINI_MODELS,
   OllamaProvider,
   OPENAI_MODELS,
   OPENROUTER_MODELS,
@@ -44,6 +45,7 @@ export const PROVIDER_DISPLAY_NAMES: Record<ProviderName, string> = {
   copilot: 'GitHub Copilot',
   claude: 'Claude (API Key)',
   openai: 'ChatGPT (API Key)',
+  gemini: 'Google Gemini',
   ollama: 'Ollama (Local)',
   openrouter: 'OpenRouter',
 };
@@ -93,36 +95,12 @@ function showWelcomeBanner(): void {
   console.log();
   console.log(accentColor(`  ┌${'─'.repeat(width)}┐`));
   console.log(line(''));
-  console.log(
-    line(
-      `   ${pc.bold(pc.white('██████╗  █████╗ ███████╗██╗  ██╗██╗ ██████╗'))}`,
-    ),
-  );
-  console.log(
-    line(
-      `   ${pc.bold(pc.white('██╔══██╗██╔══██╗██╔════╝██║  ██║██║██╔═══██╗'))}`,
-    ),
-  );
-  console.log(
-    line(
-      `   ${pc.bold(pc.white('██████╔╝███████║███████╗███████║██║██║   ██║'))}`,
-    ),
-  );
-  console.log(
-    line(
-      `   ${pc.bold(pc.white('██╔══██╗██╔══██║╚════██║██╔══██║██║██║   ██║'))}`,
-    ),
-  );
-  console.log(
-    line(
-      `   ${pc.bold(pc.white('██████╔╝██║  ██║███████║██║  ██║██║╚██████╔╝'))}`,
-    ),
-  );
-  console.log(
-    line(
-      `   ${pc.bold(pc.white('╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝ ╚═════╝'))}`,
-    ),
-  );
+  console.log(line(`   ${pc.bold(pc.white('███████╗██╗  ██╗ █████╗ ██╗'))}`));
+  console.log(line(`   ${pc.bold(pc.white('██╔════╝██║  ██║██╔══██╗██║'))}`));
+  console.log(line(`   ${pc.bold(pc.white('███████╗███████║███████║██║'))}`));
+  console.log(line(`   ${pc.bold(pc.white('╚════██║██╔══██║██╔══██║██║'))}`));
+  console.log(line(`   ${pc.bold(pc.white('███████║██║  ██║██║  ██║██║'))}`));
+  console.log(line(`   ${pc.bold(pc.white('╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝'))}`));
   console.log(line(''));
   console.log(line(dim('   Natural language to shell commands.')));
   console.log(line(dim('   Stop Googling, start doing.')));
@@ -166,6 +144,11 @@ export async function runAuthSetup(showBanner = true): Promise<boolean> {
         value: 'openai' as const,
         name: 'ChatGPT (API Key)',
         description: 'Use OpenAI API key',
+      },
+      {
+        value: 'gemini' as const,
+        name: 'Google Gemini (API Key)',
+        description: 'Use Google Gemini API key',
       },
       {
         value: 'ollama' as const,
@@ -398,6 +381,53 @@ export async function runAuthSetup(showBanner = true): Promise<boolean> {
       model = await select({
         message: 'Select model:',
         choices: OPENAI_MODELS.map((m) => ({
+          value: m.value,
+          name: m.label,
+        })),
+        theme: getShAITheme(),
+      });
+      break;
+    }
+
+    case 'gemini': {
+      console.log();
+      console.log(
+        pc.dim('  Get your API key from: https://aistudio.google.com/apikey'),
+      );
+      console.log();
+
+      let apiKey = await password({
+        message: 'Enter your Google Gemini API key:',
+        mask: '*',
+        theme: getShAITheme(),
+      });
+
+      let keyWarning = validateApiKeyFormat(apiKey, 'gemini');
+      while (keyWarning) {
+        console.log(pc.yellow(`\n  ${keyWarning}`));
+        const continueAnyway = await confirm({
+          message: 'Continue anyway?',
+          default: false,
+          theme: getShAITheme(),
+        });
+
+        if (continueAnyway) {
+          break;
+        }
+
+        apiKey = await password({
+          message: 'Enter your Google Gemini API key:',
+          mask: '*',
+          theme: getShAITheme(),
+        });
+        keyWarning = validateApiKeyFormat(apiKey, 'gemini');
+      }
+
+      credentials = { type: 'api_key', apiKey };
+
+      model = await select({
+        message: 'Select model:',
+        choices: GEMINI_MODELS.map((m) => ({
           value: m.value,
           name: m.label,
         })),

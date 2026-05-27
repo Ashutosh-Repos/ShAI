@@ -10,6 +10,7 @@ import {
   ClaudeSubscriptionProvider,
 } from './claude-subscription.js';
 import { COPILOT_MODELS, CopilotProvider } from './copilot.js';
+import { GEMINI_MODELS, GeminiProvider } from './gemini.js';
 import { OLLAMA_RECOMMENDED_MODELS, OllamaProvider } from './ollama.js';
 import { OPENAI_MODELS, OpenAIProvider } from './openai.js';
 import { OPENROUTER_MODELS, OpenRouterProvider } from './openrouter.js';
@@ -45,6 +46,8 @@ function createProviderFromType(
       return new ChatGPTSubscriptionProvider(config);
     case 'copilot':
       return new CopilotProvider(config);
+    case 'gemini':
+      return new GeminiProvider(config);
     case 'ollama':
       return new OllamaProvider(config);
     case 'openrouter':
@@ -60,6 +63,7 @@ export {
   OPENAI_MODELS,
   CHATGPT_SUBSCRIPTION_MODELS,
   COPILOT_MODELS,
+  GEMINI_MODELS,
   OLLAMA_RECOMMENDED_MODELS,
   OPENROUTER_MODELS,
 };
