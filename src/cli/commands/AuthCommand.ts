@@ -1,0 +1,26 @@
+import { Command } from 'clipanion';
+import { runAuthSetup } from '../../core/auth.js';
+import { accent } from '../../utils/colors.js';
+
+export class AuthCommand extends Command {
+  static paths = [['auth'], ['--auth']];
+
+  static usage = Command.Usage({
+    description: 'Configure AI provider for ShAI',
+    examples: [['Configure AI provider', '$0 --auth']],
+  });
+
+  async execute(): Promise<number> {
+    const success = await runAuthSetup();
+
+    if (success) {
+      console.log(
+        accent("You're all set! Try:"),
+        accent('shai find all png files'),
+      );
+      console.log();
+    }
+
+    return success ? 0 : 1;
+  }
+}
