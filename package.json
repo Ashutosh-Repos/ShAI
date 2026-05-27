@@ -1,5 +1,5 @@
 {
-  "name": "shai",
+  "name": "shai-shell",
   "version": "2.1.1",
   "pnpm": {
     "onlyBuiltDependencies": [

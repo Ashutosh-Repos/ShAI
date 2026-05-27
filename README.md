@@ -5,6 +5,7 @@
 </p>
 
 <p align="center">
+  <a href="https://www.npmjs.com/package/shai-shell"><img src="https://img.shields.io/npm/v/shai-shell.svg" alt="npm" /></a>
   <a href="https://github.com/Ashutosh-Repos/ShAI/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License" /></a>
   <a href="https://github.com/Ashutosh-Repos/ShAI"><img src="https://img.shields.io/github/stars/Ashutosh-Repos/ShAI?style=social" alt="Stars" /></a>
 </p>
@@ -20,9 +21,9 @@
 ## Quick Start
 
 ```bash
-npm i -g Ashutosh-Repos/ShAI # Install globally from GitHub
-shai --auth                  # Setup your AI provider
-shai show disk usage         # Start using!
+npm i -g shai-shell    # Install globally from npm
+shai --auth            # Setup your AI provider
+shai show disk usage   # Start using!
 ```
 
 Requires Node.js 20.12.0+
@@ -199,5 +200,5 @@ Licensed under Apache 2.0 · [View LICENSE](https://github.com/Ashutosh-Repos/Sh
 ---
 
 <p align="center">
-  <a href="https://github.com/Ashutosh-Repos/ShAI">GitHub</a> · <a href="https://github.com/Ashutosh-Repos">Author</a>
+  <a href="https://github.com/Ashutosh-Repos/ShAI">GitHub</a> · <a href="https://www.npmjs.com/package/shai-shell">npm</a> · <a href="https://github.com/Ashutosh-Repos">Author</a>
 </p>
