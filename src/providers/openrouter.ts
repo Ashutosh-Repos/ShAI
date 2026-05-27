@@ -103,11 +103,23 @@ export class OpenRouterProvider implements AIProvider {
 
   async validateCredentials(): Promise<boolean> {
     try {
-      const response = await fetch('https://openrouter.ai/api/v1/auth/key', {
-        headers: {
-          Authorization: `Bearer ${this.apiKey}`,
+      const response = await fetch(
+        'https://openrouter.ai/api/v1/chat/completions',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.apiKey}`,
+            'HTTP-Referer': 'https://github.com/Ashutosh-Repos/ShAI',
+            'X-Title': 'ShAI',
+          },
+          body: JSON.stringify({
+            model: this.model,
+            max_tokens: 1,
+            messages: [{ role: 'user', content: 'hi' }],
+          }),
         },
-      });
+      );
       return response.ok;
     } catch {
       return false;
