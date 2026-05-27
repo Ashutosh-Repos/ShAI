@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
-    "prepare": "npx tsup",
+    "prepare": "node ./node_modules/tsup/dist/cli-default.js",
     "start": "node dist/index.js",
     "lint": "biome check --write .",
     "lint:check": "biome check .",
